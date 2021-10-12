@@ -1,0 +1,80 @@
+//Exercício Módulo Calculadora
+//Função enter -> recebe as entradas e retorna um array com as entradas da operação atual
+//Função remove -> "Apaga" a última entrada digitada e retorna um array com as entradas da operação atual
+//Função equals -> Retorna o resultado da operação 
+//Função list -> mmostra todas as operações feitas e guardadas na memória
+//Função reset -> Limpa a memória 
+
+const calculadora = (function () {
+
+    const _memory = new Map;
+
+    const _currentOperation = [];
+
+    const _possiblesOperators = ['+','-','*','/'];
+
+    const _sum = (x,y) => x + y;
+    const _difference = (x,y) => x - y;
+    const _multiplication = (x,y) => x * y;
+    const _division = (x,y) => x / y;
+
+    const _mathOperation = {
+        '+': _sum,
+        '-': _difference,
+        '*': _multiplication,
+        '/': _division,
+    };
+
+    const _createNewOperation = () => _currentOperation.length = 0;
+
+    function enter (symbol) {
+
+        if (typeof(symbol) !== 'number'){
+            if (symbol !== '+' & symbol !== '-' & symbol !== '*' & symbol !== '/'){
+                return 'Entrada Inválida!'
+            }
+            else {
+                _currentOperation.push(symbol)
+                return _currentOperation
+            }
+        }
+
+        _currentOperation.push(symbol)
+        return _currentOperation
+    };
+
+    function remove (){
+        _currentOperation.pop()
+        return _currentOperation
+    };
+
+    function equals (){
+        const [num1, operator, num2] = _currentOperation
+
+        for (const val of _possiblesOperators){
+            if (operator == val){
+                const result = _mathOperation[val](num1,num2)
+                _memory.set(`${num1} ${val} ${num2}`,result)
+                return result
+            }
+        }
+        _createNewOperation()
+    };
+
+    function list (){
+        return _memory
+    };
+
+    function reset (){
+         _memory.clear()
+    };
+
+    return{
+        enter,
+        remove,
+        equals,
+        list,
+        reset
+    };
+
+})();
