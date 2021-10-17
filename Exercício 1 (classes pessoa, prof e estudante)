@@ -1,0 +1,64 @@
+class Person {
+
+    constructor (firstName, lastName, age, gender, interests){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+        this.gender = gender;
+        this.interests = interests;
+
+    }
+
+    get fullName (){
+        return `${this.firstName} ${this.lastName}`
+    }
+
+    get bio (){
+        return `${this.firstName} is ${this.age} years old. They like ${this.interests}.`
+    }
+
+    get greeting (){
+        const fullname = this.fullName
+        return `Hi! I'm ${fullname}`
+    }
+}
+
+class Teacher extends Person {
+
+    constructor(firstName, lastName, age, gender, interests, subject){
+        super(firstName, lastName, age, gender, interests);
+        this.subject = subject;
+    }
+
+    get greeting (){
+        
+        let arrayPrefix = []
+
+        if (this.gender == 'female'){
+            arrayPrefix = [...arrayPrefix, 'Mrs.']
+        }
+        else if(this.gender == 'male') {
+            arrayPrefix = [...arrayPrefix, 'Mr.']
+        }
+        else{
+            arrayPrefix = [...arrayPrefix, '']
+        }
+
+        const [prefix] = arrayPrefix
+
+        return `Hello. My name is ${prefix} ${this.lastName}, and I teach ${this.subject}`
+    }
+
+}
+
+class Student extends Person {
+
+    constructor(firstName, lastName, age, gender, interests){
+        super(firstName, lastName, age, gender, interests);
+    }
+
+    get greeting (){
+        return `Yo! I'm ${this.firstName}`
+    }
+
+}
