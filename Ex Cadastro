@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ex2 Cadastro</title>
+</head>
+<body>
+    <main>
+        <h1>Cadastro</h1>
+        <form>
+            <input type="text">
+            <button type="submit" onclick="createUser()"> Add User </button>
+        </form>
+        <section>
+            <h2>Lista de Usuários</h2>
+            <ul></ul>
+        </section>
+    </main>
+    <script>
+        const form = document.querySelector('form')
+        const bnAddUser = document.querySelector('button[type="submit"]')
+
+        function createBnRemove (item) {
+            const bnRemove = document.createElement('button')
+
+            bnRemove.textContent = 'Remove'
+
+            bnRemove.onclick = function (){
+                item.remove()
+            }
+
+            return bnRemove
+        }
+
+        function createUser (){
+            const userList = document.querySelector('ul')
+            const userName = document.querySelector('input')
+            const userItem = document.createElement('li')
+
+            userList.appendChild(userItem)
+            userItem.textContent = userName.value
+
+            userItem.appendChild(createBnRemove(userItem))
+
+            userName.value = ''
+        }
+
+        form.addEventListener('submit',function(evt){
+                evt.preventDefault()
+        })
+
+    </script>
+</body>
+</html>
