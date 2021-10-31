@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Módulo 4</title>
+</head>
+<body>
+    <h1>Calculadora</h1>
+    <input type='number' id='entrada'>
+    <input type="radio" value="+"> +
+    <input type="radio" value="-"> –
+    <input type="radio" value="*"> *
+    <input type="radio" value="/"> /
+    <button type='button' id='enter'>Enter</button>
+    <button type='button' id='equal'>=</button>
+    <button type='button' id='reset'>Reset</button>
+    <div id='total'>
+        Total: <span>0</span>
+    </div>
+    <script>
+        const _memory = new Map;
+
+        let _currentOperation = [];
+
+        const symbol = document.querySelector('#entrada')
+
+        function enter () {
+            _currentOperation = [..._currentOperation, +symbol.value]
+        };
+
+        const buttonEnter = document.querySelector('#enter')
+
+        buttonEnter.onclick = function (){
+            enter();
+            console.log(_currentOperation)
+            symbol.value = ''
+        }
+
+        const _possiblesOperators = ['+','-','*','/'];
+
+        const _sum = (x,y) => x + y;
+        const _difference = (x,y) => x - y;
+        const _multiplication = (x,y) => x * y;
+        const _division = (x,y) => x / y;
+
+        const _mathOperation = {
+            '+': _sum,
+            '-': _difference,
+            '*': _multiplication,
+            '/': _division,
+        };
+
+        const _createNewOperation = () => _currentOperation.length = 0;
+
+        const total = document.querySelector('#total span');
+
+        function equals (operator){
+        
+            const [num1, num2] = _currentOperation
+
+
+            for (const val of _possiblesOperators){
+                if (operator == val){
+                    const result = _mathOperation[val](num1,num2)
+                    _memory.set(`${num1} ${val} ${num2}`,result)
+                    total.innerText = result
+                }
+            }
+
+            _createNewOperation()
+        };
+
+        const buttonEquals = document.querySelector('#equal');
+
+        buttonEquals.onclick = function () {
+            const operator = document.querySelector('input[type="radio"]:checked')
+            equals(operator.value);
+        }
+
+        function reset (){
+            _memory.clear()
+        };
+
+        const buttonReset = document.querySelector('#reset');
+
+        buttonReset.onclick = function(){
+            reset()
+            total.innerText = 0
+        }
+
+    </script>
+</body>
+</html>
