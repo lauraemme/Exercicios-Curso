@@ -1,0 +1,144 @@
+<!--Laura Navarro-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modal 22/10</title>
+    <style>
+        .modal{
+            background-color:  #afc4c5;
+            box-shadow: 5px 5px 30px rgb(0 0 0 / 10%);
+            box-sizing: border-box;
+            opacity: 1;
+            width: 200px;
+            height: 150px;
+            padding: 15px;
+            position: fixed;
+            left: calc(50% - 100px);
+            top: calc(50% - 75px);
+            transition: 0.4s all ease;
+        }
+        .modal:not(.is-open){
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(.4);
+        }
+    </style>
+</head>
+<body>
+    <button type="button" name="open-modal">Abrir Modal</button>
+    <div class="modal">
+        <form>
+            <!--<input type="email" required placeholder="Digite seu email">-->
+            <section class="inputs"></section>
+            <button type="button" onclick="useModal.cancel()">Cancelar</button>
+            <button type="submit">Ok</button>
+        </form>
+    </div>
+    <script>
+        const btnOpenButton = document.querySelector('button[name="open-modal"]')
+
+        //array que contém o placeholder e o tipo dos inputs que serão inseridos no modal
+        const arrayFields = [{placeholder:'Idade',type:'number'},{placeholder:'Nome',type:'text'},{placeholder:'Email',type:'email'}]
+
+        btnOpenButton.onclick = function(){
+            useModal.open(
+                arrayFields,
+                {
+                fail: () => {
+                    console.log('Cliente cancelou!')
+                },
+                success: nodeList => {
+                    nodeList.forEach(item => console.log(item.value))
+                }
+            })
+        }
+
+        const useModal = (function(){
+            
+            const _modal = document.querySelector('.modal')
+            const _form = document.querySelector('.modal form')
+            const _sectionInputs = document.querySelector('.modal form .inputs')
+
+            const _classOpen = 'is-open'
+
+            let _successFn;
+            let _failFn;
+
+            function _resetForm (){
+                _form.reset();
+            }
+
+            function cancel (settings){
+                _failFn();
+                close();
+                _resetInputs();
+            }
+
+            function _createInputs (arrOfObj){
+                arrOfObj.forEach(element => {
+                    const inputPlaceHolder = element.placeholder;
+                    const inputType = element.type;
+
+                    const newInput = document.createElement('input')
+
+                    newInput.type = inputType
+                    newInput.placeholder = inputPlaceHolder
+                    newInput.required = true
+
+                    _sectionInputs.appendChild(newInput)
+                });
+            }
+
+            function _resetInputs (){
+                while(_sectionInputs.firstChild){
+                    _sectionInputs.removeChild(_sectionInputs.firstChild)
+                }
+            }
+
+            function _getInputs (){
+                const nodeListOfInput = document.querySelectorAll('.modal section input')
+
+                return nodeListOfInput;
+            }
+
+            function open (arrOfInputs,settings) {
+                _modal.classList.add(_classOpen)
+
+                if(settings.fail){
+                    _failFn = settings.fail;
+                }
+
+                if(settings.success){
+                    _successFn = settings.success;
+                }
+
+                _createInputs(arrOfInputs)       
+
+                _form.onsubmit = function (evt){
+                    evt.preventDefault();
+
+                    const nodeListInputs = _getInputs ()
+                    _successFn(nodeListInputs);
+                    close();
+                    _resetInputs();
+                    _resetForm();
+                }
+            }
+            
+            function close (){
+                _modal.classList.remove(_classOpen)
+            }
+
+            return {
+                open,
+                close,
+                cancel,
+            } 
+        })()
+
+    </script>
+</body>
+</html>
