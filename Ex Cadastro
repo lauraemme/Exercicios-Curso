@@ -1,3 +1,5 @@
+<!--Laura Navarro-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +13,7 @@
         <h1>Cadastro</h1>
         <form>
             <input type="text">
-            <button type="submit" onclick="createUser()"> Add User </button>
+            <button type="submit"> Add User </button>
         </form>
         <section>
             <h2>Lista de Usuários</h2>
@@ -19,37 +21,39 @@
         </section>
     </main>
     <script>
-        const form = document.querySelector('form')
-        const bnAddUser = document.querySelector('button[type="submit"]')
 
-        function createBnRemove (item) {
-            const bnRemove = document.createElement('button')
+        const form = document.querySelector('form');
+        form.addEventListener('submit',function(evt){
+                evt.preventDefault();
+        });
 
-            bnRemove.textContent = 'Remove'
+        function createBtnRemove (item) {
+            const btnRemove = document.createElement('button');
 
-            bnRemove.onclick = function (){
-                item.remove()
-            }
+            btnRemove.textContent = 'Remove';
 
-            return bnRemove
-        }
+            btnRemove.onclick = function (){
+                item.remove();
+            };
+
+            return btnRemove;
+        };
 
         function createUser (){
-            const userList = document.querySelector('ul')
-            const userName = document.querySelector('input')
-            const userItem = document.createElement('li')
+            const userList = document.querySelector('ul');
+            const userName = document.querySelector('input');
+            const userItem = document.createElement('li');
 
-            userList.appendChild(userItem)
-            userItem.textContent = userName.value
+            userList.appendChild(userItem);
+            userItem.textContent = userName.value;
 
-            userItem.appendChild(createBnRemove(userItem))
+            userItem.appendChild(createBtnRemove(userItem));
 
-            userName.value = ''
-        }
+            userName.value = '';
+        };
 
-        form.addEventListener('submit',function(evt){
-                evt.preventDefault()
-        })
+        const btnAddUser = document.querySelector('button[type="submit"]');
+        btnAddUser.addEventListener('click',createUser);
 
     </script>
 </body>
