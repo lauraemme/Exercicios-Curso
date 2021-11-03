@@ -6,56 +6,117 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Desafio Promise Laura Navarro</title>
 </head>
+<style>
+    ul{
+        list-style-type: none ;
+        padding: 20px;
+    }
+
+    li{
+        background-color: #c0ddde;
+        margin: 5px;
+        padding: 5px;
+    }
+</style>
 <body>
     <h1>Desafio Promise Laura Navarro</h1>
-    <button type="button">Gerar Lista</button>
+    <button type="button" id="create">Gerar Lista</button>
+    <button type="button" id="clear">Limpar Lista</button>
     <section></section>
     <script>
-        const btnCreatList = document.querySelector('button')
 
-        function delay (time){
-            return new Promise(
-                resolve => setTimeout(resolve,time)
-            )
-        }
+        const moduloList = (function(){
 
-        function createPromise (){
-            return new Promise (
-                async function (resolve,reject){
-                    const randomLength = Math.floor(Math.random()*20)
-
-                    const time = randomLength * 1000
-                    
-                    await delay(time)
-
-                    let array = []
-                    for (let i = 0; i < randomLength; i++){
-                        let newElement = Math.floor(Math.random()*100);
-                        array = [...array, newElement]
-                    }
-                    console.log(array)
-                    return array
-                }
-            ) 
-        }
-
-        function geraArray (array){
-            const section = document.querySelector('section')
-            const list = document.createElement('ul')
-
-            section.appendChild(list)
-
-            for(let index = 1; index <= 3; index ++){
-                const container = document.createElement('li')
-                list.appendChild(container)
-                const arr = createPromise();
-
-                container.textContent = `Array ${index}: ${arr}`
+            function _delay (time){
+                return new Promise(
+                    resolve => setTimeout(resolve,time)
+                )
             }
+
+            function _createPromise (){
+                const promise = new Promise (
+                    async function(resolve,reject){
+                       const randomLength = Math.floor(Math.random()*20)
+
+                       const time = randomLength * 1000
+                    
+                       await _delay(time)
+
+                        let array = []
+                        for (let i = 0; i < randomLength; i++){
+                            let newElement = Math.floor(Math.random()*100);
+                            array = [...array, newElement]
+                        }
+
+                        console.log(array)
+                        resolve(array)
+                        }
+                    )
+                return promise
+            }
+
+            function _solvePromises (){
+                const promise1 = _createPromise()
+                const promise2 = _createPromise()
+                const promise3 = _createPromise()
+
+                const promiseAll = Promise.all([promise1,promise2,promise3])
+                
+                return promiseAll
+            }
+
+            function showArrays (){
+
+                const section = document.querySelector('section')
+                const list = document.createElement('ul')
+
+                section.appendChild(list)
+
+                const promisesResult = _solvePromises()
+
+                promisesResult.then(
+                    (arr) => {
+                        for(let index = 0; index < 3; ){
+                            const container = document.createElement('li')
+                            list.appendChild(container)
+
+                            const currentArr = arr[index]
+
+                            container.textContent = `Array: ${currentArr}`
+
+                            index++
+
+                        }
+                    }
+                )
+            }
+
+            return{
+                showArrays,
+            }
+        })()
+
+        const section = document.querySelector('section')
+        
+        function clearList (){
+            while(section.firstChild){
+                    section.removeChild(section.firstChild)
+                }
         }
+
+        const btnCreatList = document.querySelector('#create')
+        const btnClear = document.querySelector('#clear')
 
         btnCreatList.onclick = function (){
-            geraArray()
+            const text = document.createElement('p')
+            text.textContent = 'Gerando listas de números aleatório, espere por favor.'
+            section.appendChild(text)
+
+            moduloList.showArrays()
+        }
+
+        btnClear.onclick = function (){
+            clearList()
         }
 
     </script>
