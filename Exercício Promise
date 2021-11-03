@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desafio Promise Laura Navarro</title>
+</head>
+<body>
+    <h1>Desafio Promise Laura Navarro</h1>
+    <button type="button">Gerar Lista</button>
+    <section></section>
+    <script>
+        const btnCreatList = document.querySelector('button')
+
+        function delay (time){
+            return new Promise(
+                resolve => setTimeout(resolve,time)
+            )
+        }
+
+        function createPromise (){
+            return new Promise (
+                async function (resolve,reject){
+                    const randomLength = Math.floor(Math.random()*20)
+
+                    const time = randomLength * 1000
+                    
+                    await delay(time)
+
+                    let array = []
+                    for (let i = 0; i < randomLength; i++){
+                        let newElement = Math.floor(Math.random()*100);
+                        array = [...array, newElement]
+                    }
+                    console.log(array)
+                    return array
+                }
+            ) 
+        }
+
+        function geraArray (array){
+            const section = document.querySelector('section')
+            const list = document.createElement('ul')
+
+            section.appendChild(list)
+
+            for(let index = 1; index <= 3; index ++){
+                const container = document.createElement('li')
+                list.appendChild(container)
+                const arr = createPromise();
+
+                container.textContent = `Array ${index}: ${arr}`
+            }
+        }
+
+        btnCreatList.onclick = function (){
+            geraArray()
+        }
+
+    </script>
+</body>
+</html>
