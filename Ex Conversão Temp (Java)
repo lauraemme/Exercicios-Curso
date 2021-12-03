@@ -1,0 +1,35 @@
+package com.exercio.conversaotemp;
+
+public class Main {
+
+    public static void main(String[] args){
+
+        float celsiusTemperature = 18f;
+
+        final float NINE_FIFTHS = 1.8f;
+
+        float fahrenheitTemperature = (celsiusTemperature * NINE_FIFTHS) + 32;
+
+        final float KELVIN_CONST = 273.15f;
+
+        float kelvinTemperature = celsiusTemperature + KELVIN_CONST;
+
+        final float REAUMUR_CONST = 0.8f;
+
+        float reaumurTemperature = celsiusTemperature * REAUMUR_CONST;
+
+        //encontrei uma outra fórmula para conversão de rankine
+        float rankineTemperature = (kelvinTemperature) * NINE_FIFTHS;
+
+        System.out.printf("A temperatura %.2fªC em celsius convertida  ", celsiusTemperature);
+        System.out.println("");
+        System.out.printf("Fahrenheit: %.2fªF",fahrenheitTemperature);
+        System.out.println("");
+        System.out.printf("Kelivn: %.2fK",kelvinTemperature);
+        System.out.println("");
+        System.out.printf("Réaumur: %.2fªr", reaumurTemperature);
+        System.out.println("");
+        System.out.printf("Rankine: %.2fªRa",rankineTemperature);
+    }
+
+}
