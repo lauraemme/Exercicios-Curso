@@ -1,6 +1,6 @@
 package com.exercio.conversaotemp;
 
-import com.exercio.conversaotemp.service.Converter;
+import com.exercio.conversaotemp.utils.Menu;
 import com.exercio.conversaotemp.utils.Printer;
 import com.exercio.conversaotemp.utils.Reader;
 
@@ -8,17 +8,20 @@ public class Main {
 
     public static void main(String[] args){
 
-        float celsiusTemperature = Reader.scanTemp();
+        Printer.msgCoverterinitialized();
 
-        float fahrenheitTemperature = Converter.toFarenheit(celsiusTemperature);
+        int menuOption;
+        int continuesOption = 1;
 
-        float kelvinTemperature = Converter.toKelvin(celsiusTemperature);
+        while ( continuesOption != 0){
+            Printer.msgMenuOptions();
+            menuOption = Reader.scanOption();
 
-        float reaumurTemperature = Converter.toReaumur(celsiusTemperature);
+            continuesOption = Menu.runMenu(menuOption);
+        }
 
-        float rankineTemperature = Converter.toRankine(celsiusTemperature);
-
-        Printer.showResults(fahrenheitTemperature, kelvinTemperature, reaumurTemperature, rankineTemperature);
+        Printer.msgConverterClosed();
+        Reader.closeScan();
     }
 
 }
